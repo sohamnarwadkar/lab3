@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fffaf0">
+  <meta name="description" content="Buildathon 2027: a two-day student hackathon with bold ideas, practical projects, and exciting prizes.">
+  <title>Buildathon 2027 | Make ideas matter</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #201b36;
+      background: #fffaf0;
+      --ink: #201b36;
+      --muted: #6f6a82;
+      --paper: #fffaf0;
+      --white: #fffefa;
+      --purple: #6740e8;
+      --purple-dark: #4824ba;
+      --orange: #ff7652;
+      --pink: #ff6f9c;
+      --lime: #d7ff70;
+      --line: rgba(32, 27, 54, 0.13);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+    body {
+      min-width: 0;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 92% 10%, rgba(255, 188, 148, 0.3), transparent 25%),
+        radial-gradient(ellipse at 4% 40%, rgba(190, 177, 255, 0.22), transparent 27%),
+        var(--paper);
+    }
+
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(1180px, calc(100% - 64px)); margin-inline: auto; }
+    .topbar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 1px solid rgba(32, 27, 54, 0.08);
+      background: rgba(255, 250, 240, 0.88);
+      backdrop-filter: blur(16px);
+    }
+    .nav { min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: var(--ink); font-size: 14px; font-weight: 850; letter-spacing: 0.025em; text-decoration: none; }
+    .brand > span:last-child > span { color: var(--purple) !important; }
+    .brand-icon { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 14px 14px 14px 5px; background: var(--purple); color: white; box-shadow: 0 7px 16px rgba(103, 64, 232, 0.25); transform: rotate(-5deg); }
+    .brand-icon svg { width: 21px; height: 21px; }
+    .nav-links { display: flex; align-items: center; gap: 30px; color: #68637b; font-size: 12px; font-weight: 700; }
+    .nav-links a { text-decoration: none; transition: color 160ms ease; }
+    .nav-links a:hover { color: var(--purple); }
+    .mobile-register { display: none; }
+    .nav-toggle { display: none; }
+    .button {
+      min-height: 47px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--orange);
+      color: white;
+      box-shadow: 0 8px 18px rgba(255, 118, 82, 0.24);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+    .button:hover { transform: translateY(-3px) rotate(-1deg); background: #f45e3b; box-shadow: 0 13px 24px rgba(255, 118, 82, 0.3); }
+    .button:active { transform: translateY(0) scale(0.98); }
+    .button svg { width: 16px; height: 16px; }
+    .nav-toggle { display: none; }
+
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: 585px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
+      align-items: center;
+      gap: 45px;
+      padding-block: 62px 68px;
+    }
+    .hero-copy { position: relative; z-index: 2; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 13px;
+      border: 1px solid rgba(103, 64, 232, 0.18);
+      border-radius: 999px;
+      background: #f1ecff;
+      color: #5130bc;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+    .tag-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff7652; box-shadow: 0 0 0 4px rgba(255, 118, 82, 0.15); }
+    h1 {
+      max-width: 650px;
+      margin: 24px 0 18px;
+      color: var(--ink);
+      font-size: clamp(56px, 6.1vw, 76px);
+      font-weight: 900;
+      letter-spacing: -0.085em;
+      line-height: 0.97;
+    }
+    h1 span { position: relative; z-index: 0; color: var(--purple); white-space: nowrap; }
+    h1 span::after { position: absolute; z-index: -1; right: 0; bottom: 3px; left: 3px; height: 0.2em; border-radius: 99px; background: var(--lime); content: ""; transform: rotate(-2deg); }
+    .hero-copy > p { max-width: 455px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.8; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 27px; }
+    .text-link { display: inline-flex; align-items: center; gap: 7px; color: var(--ink); font-size: 12px; font-weight: 750; text-decoration: none; }
+    .text-link:hover { color: var(--purple); }
+    .text-link svg { width: 16px; height: 16px; transition: transform 160ms ease; }
+    .text-link:hover svg { transform: translateY(3px); }
+    .spark-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #5532c0;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 800;
+      transition: background 160ms ease, transform 160ms ease;
+    }
+    .spark-button:hover { background: #eee8ff; transform: rotate(-2deg) scale(1.03); }
+    .spark-button svg { width: 16px; height: 16px; }
+    .idea-prompt { min-height: 18px; max-width: 450px; margin: 8px 0 -7px; color: #6254a0; font-size: 11px; line-height: 1.55; }
+    .countdown { display: flex; align-items: center; gap: 14px; margin-top: 27px; }
+    .countdown-label { max-width: 78px; color: #77718b; font-size: 9px; font-weight: 850; letter-spacing: 0.11em; line-height: 1.5; text-transform: uppercase; }
+    .countdown-units { display: flex; gap: 7px; }
+    .count-unit { min-width: 48px; display: grid; justify-items: center; padding: 7px 6px; border: 1px solid rgba(32, 27, 54, 0.1); border-radius: 11px; background: rgba(255, 254, 250, 0.8); }
+    .count-unit strong { color: var(--ink); font-size: 15px; font-variant-numeric: tabular-nums; line-height: 1.2; }
+    .count-unit span { margin-top: 3px; color: #8d879f; font-size: 8px; text-transform: uppercase; }
+
+    .hero-art {
+      position: relative;
+      min-height: 415px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 3px solid white;
+      border-radius: 48% 48% 30px 30px;
+      background:
+        radial-gradient(circle at 54% 46%, rgba(255,255,255,0.72) 0 24%, transparent 24.5%),
+        radial-gradient(circle at 58% 47%, #ffb568, #ff8a70 33%, transparent 33.5%),
+        linear-gradient(145deg, #ab91ff, #7652ed 54%, #4f2dc7);
+      box-shadow: 0 22px 50px rgba(87, 58, 155, 0.2), inset 0 0 0 10px rgba(255,255,255,0.12);
+      isolation: isolate;
+    }
+    .hero-art::before, .hero-art::after { position: absolute; z-index: -1; width: 84px; height: 84px; border: 2px solid rgba(255,255,255,0.7); border-radius: 24px; content: ""; transform: rotate(28deg); }
+    .hero-art::before { top: 48px; left: 33px; animation: doodle-drift 6s ease-in-out infinite alternate; }
+    .hero-art::after { right: 43px; bottom: 37px; width: 54px; height: 54px; border-color: var(--lime); border-radius: 50%; }
+    .orbit { position: absolute; width: 300px; height: 300px; border: 1px solid rgba(255,255,255,0.7); border-radius: 50%; box-shadow: 0 0 0 24px rgba(255,255,255,0.17), 0 0 0 50px rgba(255,255,255,0.1); animation: orbit-pulse 8s ease-in-out infinite alternate; }
+    .code-card { position: relative; z-index: 1; width: min(100%, 370px); padding: 21px 23px 24px; transform: rotate(-3deg); border: 1px solid rgba(255,255,255,0.95); border-radius: 18px; background: rgba(255,254,250,0.97); box-shadow: 0 24px 54px rgba(40,23,92,0.22); animation: card-float 5s ease-in-out infinite alternate; }
+    .card-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+    .window-dots { display: flex; gap: 6px; }
+    .window-dots i { width: 8px; height: 8px; border-radius: 50%; background: #c9c6d1; }
+    .window-dots i:first-child { background: #ff796e; }
+    .window-dots i:nth-child(2) { background: #f5c955; }
+    .window-dots i:nth-child(3) { background: #8bc59b; }
+    .card-label { color: #858097; font-size: 9px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .code-lines { display: grid; gap: 13px; padding-top: 23px; color: #555168; font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace; font-size: 11px; }
+    .code-line { display: flex; gap: 13px; white-space: nowrap; }
+    .line-no { width: 13px; color: #b7b4c0; text-align: right; }
+    .code-green { color: #448e67; }
+    .code-purple { color: #7952db; }
+    .code-orange { color: #df6349; }
+    .code-muted { color: #9c9aaa; }
+    .float-chip { position: absolute; z-index: 2; display: flex; align-items: center; gap: 8px; padding: 11px 14px; border: 1px solid rgba(255,255,255,0.9); border-radius: 999px; background: var(--white); color: #37334b; font-size: 10px; font-weight: 800; box-shadow: 0 10px 28px rgba(40,23,92,0.2); }
+    .float-chip svg { width: 17px; height: 17px; color: var(--orange); }
+    .chip-one { top: 49px; right: -4px; transform: rotate(4deg); animation: chip-bob 4.5s ease-in-out infinite; }
+    .chip-two { bottom: 41px; left: -7px; transform: rotate(-4deg); animation: chip-bob 4s ease-in-out infinite reverse; }
+    @keyframes orbit-pulse { from { transform: scale(0.96) rotate(-8deg); } to { transform: scale(1.035) rotate(8deg); } }
+    @keyframes card-float { from { translate: 0 4px; } to { translate: 0 -7px; } }
+    @keyframes chip-bob { 0%, 100% { margin-top: 0; } 50% { margin-top: -8px; } }
+    @keyframes doodle-drift { to { transform: rotate(55deg) translate(8px, -7px); } }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); overflow: hidden; border: 1px solid rgba(32,27,54,0.1); border-radius: 17px; background: rgba(255,254,250,0.82); box-shadow: 0 10px 30px rgba(51,39,73,0.05); }
+    .stat { min-height: 92px; display: flex; flex-direction: column; justify-content: center; padding: 14px 23px; border-right: 1px solid rgba(32,27,54,0.1); }
+    .stat:first-child { padding-left: 25px; }
+    .stat:last-child { border-right: 0; }
+    .stat strong { color: var(--ink); font-size: 16px; letter-spacing: -0.035em; }
+    .stat span { margin-top: 5px; color: #77718b; font-size: 10px; }
+    .stat .provisional { color: #b36a4e; font-size: 9px; }
+
+    .section { padding-block: 91px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+    .section-label { margin: 0 0 10px; color: #e26043; font-size: 10px; font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
+    h2 { margin: 0; color: var(--ink); font-size: clamp(34px, 4vw, 48px); font-weight: 900; letter-spacing: -0.07em; line-height: 1.05; }
+    .section-heading > p { max-width: 390px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+    .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    .category {
+      position: relative;
+      min-height: 180px;
+      padding: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(32,27,54,0.1);
+      border-radius: 18px;
+      background: var(--white);
+      color: var(--ink);
+      text-align: left;
+      box-shadow: 0 7px 20px rgba(48,42,63,0.035);
+      cursor: pointer;
+      transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease, background 200ms ease;
+    }
+    .category::after { position: absolute; right: -34px; bottom: -48px; width: 115px; height: 115px; border-radius: 50%; background: var(--card-accent, #eee8ff); content: ""; opacity: 0.5; transition: transform 250ms ease; }
+    .category:hover, .category:focus-visible { z-index: 1; transform: translateY(-6px) rotate(-1deg); border-color: rgba(103,64,232,0.32); box-shadow: 0 16px 30px rgba(48,42,63,0.11); }
+    .category:hover::after { transform: scale(1.3); }
+    .category:nth-child(1) { --card-accent: #ded5ff; }
+    .category:nth-child(2) { --card-accent: #ffd2dc; }
+    .category:nth-child(3) { --card-accent: #d8f39c; }
+    .category:nth-child(4) { --card-accent: #ffd5ab; }
+    .category:nth-child(5) { --card-accent: #bfe9ff; }
+    .category:nth-child(6) { --card-accent: #ffe0a2; }
+    .category[aria-pressed="true"] { transform: translateY(-4px); border-color: var(--purple); background: #f6f2ff; box-shadow: 0 0 0 3px rgba(103,64,232,0.13), 0 12px 26px rgba(48,42,63,0.08); }
+    .category-icon { position: relative; z-index: 1; width: 39px; height: 39px; display: grid; place-items: center; margin-bottom: 20px; border-radius: 13px 13px 13px 5px; background: var(--card-accent, #eee8ff); color: var(--purple-dark); }
+    .category-icon svg { width: 19px; height: 19px; }
+    .category h3 { position: relative; z-index: 1; margin: 0 0 7px; color: var(--ink); font-size: 14px; letter-spacing: -0.025em; }
+    .category p { position: relative; z-index: 1; max-width: 290px; margin: 0; color: #716c83; font-size: 11px; line-height: 1.7; }
+    .category-selection { min-height: 18px; margin: 14px 0 0; color: #6552a7; font-size: 11px; font-weight: 700; }
+
+    .prizes { display: grid; grid-template-columns: 0.92fr 1.08fr; align-items: center; gap: 52px; padding: 42px; border: 1px solid rgba(103,64,232,0.1); border-radius: 25px; background: radial-gradient(circle at 92% 5%, rgba(255,255,255,0.24), transparent 29%), linear-gradient(125deg, #d8ceff, #eee9ff 53%, #ffd8c6); }
+    .prize-copy p:last-child { max-width: 390px; margin: 14px 0 0; color: #645e79; font-size: 12px; line-height: 1.75; }
+    .prize-list { display: grid; gap: 10px; }
+    .prize-row { display: grid; grid-template-columns: 42px 1fr auto; align-items: center; gap: 13px; padding: 14px 16px; border: 1px solid rgba(46,42,70,0.08); border-radius: 13px; background: rgba(255,255,255,0.78); transition: transform 180ms ease, box-shadow 180ms ease; }
+    .prize-row:hover { transform: translateX(5px); box-shadow: 0 9px 18px rgba(62,47,105,0.1); }
+    .place { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: #ffeadc; color: #c6513d; font-size: 13px; font-weight: 900; }
+    .prize-row strong { display: block; color: var(--ink); font-size: 12px; }
+    .prize-row span { display: block; margin-top: 3px; color: #77718b; font-size: 10px; }
+    .prize-amount { color: #e15e42 !important; font-size: 17px; font-weight: 900; white-space: nowrap; }
+    .provisional-note { margin: 3px 0 0; color: #716b82; font-size: 10px; line-height: 1.5; }
+
+    .guidelines-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 30px; }
+    .guideline { display: grid; grid-template-columns: 30px 1fr; gap: 12px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .check { width: 26px; height: 26px; display: grid; place-items: center; border: 1px solid rgba(103,64,232,0.3); border-radius: 9px; background: #f0ebff; color: var(--purple); }
+    .check svg { width: 13px; height: 13px; }
+    .guideline h3 { margin: 1px 0 5px; color: var(--ink); font-size: 13px; }
+    .guideline p { margin: 0; color: #716c83; font-size: 11px; line-height: 1.7; }
+
+    .register-section { padding-top: 15px; padding-bottom: 88px; }
+    .register-card { display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 50px; padding: 43px; border: 1px solid rgba(32,27,54,0.08); border-radius: 25px; background: radial-gradient(ellipse at 7% 0%, rgba(216,206,255,0.9), transparent 39%), var(--white); box-shadow: 0 18px 50px rgba(48,42,63,0.075); }
+    .register-intro p:last-child { max-width: 300px; margin: 14px 0 0; color: #716c83; font-size: 12px; line-height: 1.75; }
+    .register-form { display: grid; gap: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .field label { display: block; margin-bottom: 7px; color: #464157; font-size: 10px; font-weight: 800; }
+    .field input, .field select { width: 100%; min-height: 46px; padding: 0 12px; border: 1px solid rgba(32,27,54,0.15); border-radius: 10px; outline: none; background: #fff; color: #302f46; font-size: 12px; transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease; }
+    .field input::placeholder { color: #a3a1af; }
+    .field select:invalid { color: #898597; }
+    .field input:focus, .field select:focus { border-color: var(--purple); background: #fdfbff; box-shadow: 0 0 0 4px rgba(103,64,232,0.12); }
+    .agreement { display: grid; grid-template-columns: 17px 1fr; gap: 10px; align-items: start; color: #716c83; font-size: 10px; line-height: 1.65; }
+    .agreement input { width: 15px; height: 15px; margin: 2px 0 0; accent-color: var(--purple); }
+    .agreement a { color: #5a37c8; font-weight: 800; }
+    .register-form .button { justify-self: start; min-width: 175px; }
+    .form-message { min-height: 18px; margin: -5px 0 0; color: #bb493a; font-size: 11px; line-height: 1.5; }
+    .form-message.success { color: #35784d !important; }
+    footer { border-top: 1px solid rgba(32,27,54,0.1); }
+    .footer-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #817c91; font-size: 10px; }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 550ms ease, transform 550ms cubic-bezier(0.2,0.75,0.25,1); }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    :focus-visible { outline: 3px solid rgba(103,64,232,0.65); outline-offset: 3px; }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 36px, 600px); }
+      .nav { min-height: 70px; }
+      .nav-links { gap: 16px; font-size: 11px; }
+      .nav .button { min-height: 41px; padding-inline: 14px; font-size: 10px; }
+      .hero { min-height: auto; grid-template-columns: 1fr; gap: 28px; padding-block: 55px 42px; }
+      h1 { max-width: 570px; font-size: clamp(58px, 12vw, 80px); }
+      .hero-art { min-height: 355px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .stat { min-height: 78px; padding: 12px 15px; }
+      .stat:first-child { padding-left: 15px; }
+      .stat:nth-child(2) { border-right: 0; }
+      .stat:nth-child(-n+2) { border-bottom: 1px solid rgba(32,27,54,0.1); }
+      .section { padding-block: 68px; }
+      .section-heading { align-items: start; flex-direction: column; gap: 13px; }
+      .category-grid { grid-template-columns: repeat(2, 1fr); }
+      .prizes { grid-template-columns: 1fr; gap: 25px; padding: 30px; }
+      .register-card { grid-template-columns: 1fr; gap: 28px; padding: 30px; }
+      .register-intro p:last-child { max-width: 460px; }
+    }
+    @media (max-width: 560px) {
+      html { scroll-padding-top: 76px; }
+      .wrap { width: calc(100% - 32px); }
+      .nav { position: relative; min-height: 66px; gap: 8px; }
+      .brand { gap: 5px; font-size: 9px; white-space: nowrap; }
+      .brand-icon { width: 30px; height: 30px; }
+      .nav .button { min-height: 36px; gap: 5px; padding-inline: 8px; font-size: 8px; white-space: nowrap; }
+      .nav .button svg { width: 13px; height: 13px; }
+      .nav-toggle { width: 37px; height: 37px; display: grid; flex: 0 0 auto; place-items: center; border: 1px solid rgba(32,27,54,0.13); border-radius: 50%; background: var(--white); color: var(--ink); cursor: pointer; }
+      .nav-toggle svg { width: 18px; height: 18px; }
+      .nav-links { position: absolute; top: calc(100% + 1px); right: 0; left: 0; display: none; align-items: stretch; gap: 0; padding: 8px 14px; border: 1px solid rgba(32,27,54,0.1); border-radius: 0 0 15px 15px; background: var(--white); box-shadow: 0 14px 24px rgba(48,42,63,0.1); }
+      .nav-links.is-open { display: grid; }
+      .nav-links a { display: block; padding: 12px 6px; }
+      .nav-links a + a { border-top: 1px solid rgba(32,27,54,0.08); }
+      .nav > .button { display: none; }
+      .nav-links .mobile-register { display: block; color: var(--purple-dark); font-weight: 900; }
+      .hero { grid-template-columns: minmax(0, 1fr); padding-top: 42px; }
+      .hero-copy { min-width: 0; }
+      .tag { max-width: 100%; flex-wrap: wrap; font-size: 8px; }
+      h1 { margin-top: 20px; font-size: clamp(42px, 13vw, 72px); }
+      .hero-copy > p { font-size: 13px; }
+      .hero-actions { max-width: 100%; gap: 10px 15px; }
+      .hero-art { min-height: 290px; border-radius: 35% 35% 23px 23px; }
+      .orbit { width: 220px; height: 220px; }
+      .code-card { width: min(88%, 330px); padding: 18px 15px; }
+      .code-lines { gap: 11px; font-size: 9px; }
+      .float-chip { padding: 9px 10px; font-size: 9px; }
+      .chip-one { top: 18px; right: 0; }
+      .chip-two { bottom: 18px; left: 0; }
+      .countdown { flex-wrap: wrap; gap: 9px; margin-top: 23px; }
+      .countdown-label { max-width: 68px; font-size: 8px; }
+      .countdown-units { max-width: 100%; gap: 4px; }
+      .count-unit { min-width: 36px; }
+      .count-unit strong { font-size: 13px; }
+      .stat { padding: 10px; }
+      .stat:first-child { padding-left: 10px; }
+      .stat strong { font-size: 12px; }
+      .stat span { font-size: 9px; }
+      .category-grid { grid-template-columns: 1fr; gap: 10px; }
+      .category { min-height: 145px; padding: 18px; }
+      .category-icon { margin-bottom: 14px; }
+      .section { padding-block: 57px; }
+      .prizes { padding: 23px 16px; }
+      .prize-row { grid-template-columns: 34px 1fr auto; gap: 8px; padding: 11px 9px; }
+      .place { width: 31px; height: 31px; font-size: 11px; }
+      .prize-amount { font-size: 13px; }
+      .guidelines-grid { grid-template-columns: 1fr; gap: 0; }
+      .register-card { gap: 22px; padding: 23px 17px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { min-height: 76px; align-items: flex-start; justify-content: center; flex-direction: column; gap: 5px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="Buildathon 2027 home">
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M13.2 2.8 5.7 13h5.1l-.5 8.2 8-11h-5.2l.1-7.4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </span>
+        <span>BUILDATHON <span style="color:#c5f36b">’27</span></span>
+      </a>
+      <div class="nav-links" id="primary-links">
+        <a href="#categories">Categories</a>
+        <a href="#prizes">Prizes</a>
+        <a href="#guidelines">Guidelines</a>
+        <a class="mobile-register" href="#register">Register your team</a>
+      </div>
+      <a class="button" href="#register">Register your team <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-controls="primary-links" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero wrap" id="home">
+      <div class="hero-copy">
+        <span class="tag"><span class="tag-dot"></span> Student hackathon · Proposed event</span>
+        <h1>Make ideas <span>matter.</span></h1>
+        <p>Two days. One team. A whole lot of possibility. Bring your boldest idea and build a solution for the real world.</p>
+        <div class="hero-actions">
+          <a class="button" href="#register">Save your spot <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="text-link" href="#guidelines">See how it works <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m7 10 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <button class="spark-button" id="spark-button" type="button"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 2 1.8 7.2L21 11l-7.2 1.8L12 20l-1.8-7.2L3 11l7.2-1.8L12 2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z" fill="currentColor"/></svg>Need an idea spark?</button>
+        </div>
+        <p class="idea-prompt" id="idea-prompt" role="status" aria-live="polite"></p>
+        <div class="countdown" aria-label="Countdown to the proposed event start">
+          <span class="countdown-label">Countdown to kickoff</span>
+          <div class="countdown-units" aria-live="off">
+            <div class="count-unit"><strong id="count-days">--</strong><span>Days</span></div>
+            <div class="count-unit"><strong id="count-hours">--</strong><span>Hours</span></div>
+            <div class="count-unit"><strong id="count-minutes">--</strong><span>Min</span></div>
+            <div class="count-unit"><strong id="count-seconds">--</strong><span>Sec</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit"></div>
+        <div class="code-card">
+          <div class="card-top">
+            <div class="window-dots"><i></i><i></i><i></i></div>
+            <span class="card-label">your next big idea</span>
+          </div>
+          <div class="code-lines">
+            <div class="code-line"><span class="line-no">01</span><span><span class="code-purple">const</span> idea = <span class="code-orange">"big impact"</span>;</span></div>
+            <div class="code-line"><span class="line-no">02</span><span><span class="code-purple">const</span> team = <span class="code-green">findYourPeople</span>();</span></div>
+            <div class="code-line"><span class="line-no">03</span><span class="code-muted">// build something useful</span></div>
+            <div class="code-line"><span class="line-no">04</span><span><span class="code-purple">while</span> (timeLeft) {</span></div>
+            <div class="code-line"><span class="line-no">05</span><span>&nbsp;&nbsp;<span class="code-green">makeItReal</span>(idea);</span></div>
+            <div class="code-line"><span class="line-no">06</span><span>}</span></div>
+          </div>
+        </div>
+        <div class="float-chip chip-one"><svg viewBox="0 0 24 24" fill="none"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg> Big ideas welcome</div>
+        <div class="float-chip chip-two"><svg viewBox="0 0 24 24" fill="none"><path d="M8 12.5 10.5 15 16 9.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> Built by students</div>
+      </div>
+    </section>
+
+    <section class="stats wrap" aria-label="Event highlights">
+      <div class="stat"><strong>Jan 16–17, 2027</strong><span>Proposed event dates</span></div>
+      <div class="stat"><strong>24 hours</strong><span>Build time</span></div>
+      <div class="stat"><strong>Teams of 2–4</strong><span>Bring your people</span></div>
+      <div class="stat"><strong>₹50,000</strong><span>Suggested total prize pool <small class="provisional">· provisional</small></span></div>
+    </section>
+
+    <section class="section wrap" id="categories">
+      <div class="section-heading">
+        <div><p class="section-label">Pick your problem space</p><h2>Choose a category.<br>Change a little world.</h2></div>
+        <p>Choose the track that best fits your idea. Interdisciplinary projects are welcome—select the closest match when you register.</p>
+      </div>
+      <div class="category-grid">
+        <article class="category" role="button" tabindex="0" aria-pressed="false" aria-label="Select AI and machine learning category" data-category="AI &amp; machine learning">
+          <span class="category-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1M9 9h6v6H9z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>AI &amp; machine learning</h3><p>Build thoughtful tools with data, automation, and responsible AI.</p>
+        </article>
+        <article class="category" role="button" tabindex="0" aria-pressed="false" aria-label="Select health and well-being category" data-category="Health &amp; well-being">
+          <span class="category-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s8-4 8-11V5l-8-3-8 3v5c0 7 8 11 8 11Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12h6m-3-3v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <h3>Health &amp; well-being</h3><p>Explore accessible, preventative, and people-first health solutions.</p>
+        </article>
+        <article class="category" role="button" tabindex="0" aria-pressed="false" aria-label="Select climate and sustainability category" data-category="Climate &amp; sustainability">
+          <span class="category-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21c4.5-2.2 7-5.6 7-10V5l-7-3-7 3v6c0 4.4 2.5 7.8 7 10Z" stroke="currentColor" stroke-width="1.6"/><path d="M8 13c4.5 0 7-2 8-6-4.5 0-7 2-8 6Zm0 0c0 2 1.5 3.5 3.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <h3>Climate &amp; sustainability</h3><p>Make everyday systems cleaner, smarter, and more sustainable.</p>
+        </article>
+        <article class="category" role="button" tabindex="0" aria-pressed="false" aria-label="Select fintech and inclusion category" data-category="Fintech &amp; inclusion">
+          <span class="category-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5m0 14h16M8 15l3-4 3 2 5-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19" cy="6" r="1.5" fill="currentColor"/></svg></span>
+          <h3>Fintech &amp; inclusion</h3><p>Design safer and more inclusive ways to manage money and opportunity.</p>
+        </article>
+        <article class="category" role="button" tabindex="0" aria-pressed="false" aria-label="Select campus and community category" data-category="Campus &amp; community">
+          <span class="category-icon"><svg viewBox="0 0 24 24" fill="none"><path d="m12 3 2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <h3>Campus &amp; community</h3><p>Solve a real challenge in student life or your local community.</p>
+        </article>
+        <article class="category" role="button" tabindex="0" aria-pressed="false" aria-label="Select open innovation category" data-category="Open innovation">
+          <span class="category-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v11H8l-4 4V5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 9h8m-8 3h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <h3>Open innovation</h3><p>Got a great idea that doesn't fit a track? This one's yours.</p>
+        </article>
+      </div>
+      <p class="category-selection" id="category-selection" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="section wrap" id="prizes">
+      <div class="prizes">
+        <div class="prize-copy">
+          <p class="section-label">Make it. Show it. Win it.</p>
+          <h2>Good ideas<br>get rewarded.</h2>
+          <p>Prizes recognize the teams that combine creativity, technical execution, and meaningful impact. Category awards and special mentions may be added by event organizers.</p>
+        </div>
+        <div class="prize-list" aria-label="Suggested prize awards">
+          <div class="prize-row"><span class="place">01</span><div><strong>First place</strong><span>Overall winner</span></div><strong class="prize-amount">₹25,000</strong></div>
+          <div class="prize-row"><span class="place">02</span><div><strong>Second place</strong><span>Runner-up</span></div><strong class="prize-amount">₹15,000</strong></div>
+          <div class="prize-row"><span class="place">03</span><div><strong>Third place</strong><span>Second runner-up</span></div><strong class="prize-amount">₹10,000</strong></div>
+          <p class="provisional-note">Prize amounts are sample assumptions and should be confirmed by the organizers before publishing.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="guidelines">
+      <div class="section-heading">
+        <div><p class="section-label">A few ground rules</p><h2>Build boldly.<br>Play fair.</h2></div>
+        <p>Everyone should have room to create, learn, and compete on equal terms. Please read these guidelines before registering.</p>
+      </div>
+      <div class="guidelines-grid">
+        <article class="guideline"><span class="check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Student teams</h3><p>Open to currently enrolled college students. Form a team of 2–4; each person may register on one team only.</p></div></article>
+        <article class="guideline"><span class="check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Build during the event</h3><p>Start new work after kickoff. You may use existing open-source libraries and tools; disclose them in your submission.</p></div></article>
+        <article class="guideline"><span class="check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Original work, honest credit</h3><p>Submit your team's own work. Credit collaborators, datasets, APIs, and third-party assets. Plagiarism means disqualification.</p></div></article>
+        <article class="guideline"><span class="check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Submit a working demo</h3><p>Before the deadline, share your project, source code, a short explanation, and a demo or screenshots with the judges.</p></div></article>
+        <article class="guideline"><span class="check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Judging criteria</h3><p>Judges consider impact, originality, technical execution, usability, and the clarity of your presentation.</p></div></article>
+        <article class="guideline"><span class="check"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Respect the community</h3><p>Be kind, inclusive, and respectful. Harassment or disruptive conduct may result in removal from the event.</p></div></article>
+      </div>
+    </section>
+
+    <section class="register-section wrap" id="register">
+      <div class="register-card">
+        <div class="register-intro">
+          <p class="section-label">Your next idea starts here</p>
+          <h2>Get your team<br>on the list.</h2>
+          <p>Share your team details and pick the category that best matches your project. Registration is a demo form and does not send or store information.</p>
+        </div>
+        <form class="register-form" id="registration-form">
+          <div class="form-row">
+            <div class="field"><label for="team-name">Team name</label><input id="team-name" name="teamName" type="text" placeholder="e.g. The Builders" maxlength="60" required></div>
+            <div class="field"><label for="team-size">Team size</label><select id="team-size" name="teamSize" required><option value="" disabled selected>Select size</option><option value="2">2 members</option><option value="3">3 members</option><option value="4">4 members</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="leader-name">Team lead name</label><input id="leader-name" name="leaderName" type="text" autocomplete="name" placeholder="Your full name" maxlength="80" required></div>
+            <div class="field"><label for="leader-email">College email</label><input id="leader-email" name="leaderEmail" type="email" autocomplete="email" placeholder="you@college.edu" maxlength="120" required></div>
+          </div>
+          <div class="field"><label for="category">Project category</label><select id="category" name="category" required><option value="" disabled selected>Choose a category</option><option>AI &amp; machine learning</option><option>Health &amp; well-being</option><option>Climate &amp; sustainability</option><option>Fintech &amp; inclusion</option><option>Campus &amp; community</option><option>Open innovation</option></select></div>
+          <label class="agreement"><input id="agree-guidelines" name="agreeGuidelines" type="checkbox" required><span>I confirm that my team meets the student and team-size requirements, and we agree to follow the <a href="#guidelines">event guidelines</a> and code of conduct.</span></label>
+          <button class="button" type="submit">Submit registration <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner wrap"><span>Buildathon 2027 · Student ideas, real-world impact.</span><span>Event details and awards shown are proposed sample information.</span></div>
+  </footer>
+
+  <script>
+    const registrationForm = document.querySelector("#registration-form");
+    const formMessage = document.querySelector("#form-message");
+    const categorySelect = document.querySelector("#category");
+    const categorySelection = document.querySelector("#category-selection");
+    const categoryCards = document.querySelectorAll(".category[data-category]");
+    const navigationToggle = document.querySelector(".nav-toggle");
+    const navigationLinks = document.querySelector("#primary-links");
+    const sparkButton = document.querySelector("#spark-button");
+    const ideaPrompt = document.querySelector("#idea-prompt");
+
+    const ideaPrompts = [
+      "Make campus life easier for one person before you try to change the world.",
+      "What if your leftover food could find its way to someone who needs it?",
+      "Design a tiny tool that helps students spend less time waiting.",
+      "Turn one everyday waste problem into a clever, measurable solution.",
+      "Build something that makes a complicated task feel delightfully simple."
+    ];
+    let lastPromptIndex = -1;
+
+    sparkButton.addEventListener("click", () => {
+      let nextPromptIndex = Math.floor(Math.random() * ideaPrompts.length);
+      if (ideaPrompts.length > 1 && nextPromptIndex === lastPromptIndex) {
+        nextPromptIndex = (nextPromptIndex + 1) % ideaPrompts.length;
+      }
+      lastPromptIndex = nextPromptIndex;
+      ideaPrompt.textContent = ideaPrompts[nextPromptIndex];
+    });
+
+    const selectCategory = (card) => {
+      const selectedCategory = card.dataset.category;
+      categoryCards.forEach((categoryCard) => {
+        categoryCard.setAttribute("aria-pressed", String(categoryCard === card));
+      });
+      categorySelect.value = selectedCategory;
+      categorySelection.textContent = `${selectedCategory} selected. We'll add it to your registration.`;
+      formMessage.textContent = "";
+    };
+
+    categoryCards.forEach((card) => {
+      card.addEventListener("click", () => selectCategory(card));
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectCategory(card);
+        }
+      });
+    });
+
+    navigationToggle.addEventListener("click", () => {
+      const isExpanded = navigationToggle.getAttribute("aria-expanded") === "true";
+      navigationToggle.setAttribute("aria-expanded", String(!isExpanded));
+      navigationToggle.setAttribute("aria-label", isExpanded ? "Open navigation menu" : "Close navigation menu");
+      navigationLinks.classList.toggle("is-open", !isExpanded);
+    });
+
+    navigationLinks.addEventListener("click", (event) => {
+      if (event.target instanceof HTMLAnchorElement) {
+        navigationToggle.setAttribute("aria-expanded", "false");
+        navigationToggle.setAttribute("aria-label", "Open navigation menu");
+        navigationLinks.classList.remove("is-open");
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && navigationToggle.getAttribute("aria-expanded") === "true") {
+        navigationToggle.setAttribute("aria-expanded", "false");
+        navigationToggle.setAttribute("aria-label", "Open navigation menu");
+        navigationLinks.classList.remove("is-open");
+        navigationToggle.focus();
+      }
+    });
+
+    const countdownParts = {
+      days: document.querySelector("#count-days"),
+      hours: document.querySelector("#count-hours"),
+      minutes: document.querySelector("#count-minutes"),
+      seconds: document.querySelector("#count-seconds")
+    };
+    const eventStart = new Date(2027, 0, 16, 9, 0, 0).getTime();
+
+    const updateCountdown = () => {
+      const remaining = Math.max(0, eventStart - Date.now());
+      const days = Math.floor(remaining / 86400000);
+      const hours = Math.floor((remaining % 86400000) / 3600000);
+      const minutes = Math.floor((remaining % 3600000) / 60000);
+      const seconds = Math.floor((remaining % 60000) / 1000);
+
+      countdownParts.days.textContent = String(days);
+      countdownParts.hours.textContent = String(hours).padStart(2, "0");
+      countdownParts.minutes.textContent = String(minutes).padStart(2, "0");
+      countdownParts.seconds.textContent = String(seconds).padStart(2, "0");
+    };
+
+    updateCountdown();
+    window.setInterval(updateCountdown, 1000);
+
+    if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll(".section-heading, .category, .prizes, .guideline, .register-card").forEach((element, index) => {
+        element.classList.add("reveal");
+        if (element.classList.contains("category")) {
+          element.style.transitionDelay = `${(index % 3) * 65}ms`;
+        }
+        revealObserver.observe(element);
+      });
+    }
+
+    registrationForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      formMessage.classList.remove("success");
+      formMessage.textContent = "";
+
+      if (!registrationForm.reportValidity()) {
+        return;
+      }
+
+      const teamName = registrationForm.elements.teamName.value.trim();
+      formMessage.classList.add("success");
+      formMessage.textContent = `Thanks, ${teamName}! Your demo registration is complete. No information has been sent or saved.`;
+    });
+  </script>
+</body>
+</html>
